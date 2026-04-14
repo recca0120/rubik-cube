@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useRef } from 'react'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 import { Edges, Text } from '@react-three/drei'
@@ -16,19 +16,15 @@ const BOUNCE_SPEED = 3 // radians/sec
 export function Cubie3D({
   x, y, z, facelets, highlight,
 }: Pos & { facelets: string; highlight?: boolean }) {
-  const materials = useMemo(
-    () =>
-      MAT_ORDER.map((dir) => {
-        const idx = faceletIndex(x, y, z, dir)
-        const color = idx === null ? INNER : FACE_COLOR[facelets[idx]]
-        return new THREE.MeshLambertMaterial({
-          color,
-          emissive: highlight ? '#ffd14f' : '#000000',
-          emissiveIntensity: highlight ? 0.4 : 0,
-        })
-      }),
-    [x, y, z, facelets, highlight],
-  )
+  const materials = MAT_ORDER.map((dir) => {
+    const idx = faceletIndex(x, y, z, dir)
+    const color = idx === null ? INNER : FACE_COLOR[facelets[idx]]
+    return new THREE.MeshLambertMaterial({
+      color,
+      emissive: highlight ? '#ffd14f' : '#000000',
+      emissiveIntensity: highlight ? 0.4 : 0,
+    })
+  })
 
   const base = SIZE + GAP
   const groupRef = useRef<THREE.Group>(null!)

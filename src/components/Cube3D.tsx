@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useFrame } from '@react-three/fiber'
 import { useCubeStore } from '@/store/cubeStore'
@@ -11,6 +11,17 @@ import { GhostArrow } from './three/GhostArrow'
 import { MoveLabel } from './three/MoveLabel'
 
 const BASE_TURN_DURATION = 0.25 // seconds per 90° at speed=1
+
+const ALL_CUBIES: Pos[] = (() => {
+  const out: Pos[] = []
+  for (let x = -1; x <= 1; x++)
+    for (let y = -1; y <= 1; y++)
+      for (let z = -1; z <= 1; z++) {
+        if (x === 0 && y === 0 && z === 0) continue
+        out.push({ x, y, z })
+      }
+  return out
+})()
 
 export function Cube3D() {
   const cube = useCubeStore((s) => s.cube)
@@ -31,7 +42,7 @@ export function Cube3D() {
 
   const facelets = cube.facelets
   const activeMove = queue[0]
-  const move = useMemo(() => parseMove(activeMove), [activeMove])
+  const move = parseMove(activeMove)
 
   const groupRef = useRef<THREE.Group>(null!)
   const rootRef = useRef<THREE.Group>(null!)
@@ -42,16 +53,7 @@ export function Cube3D() {
     if (groupRef.current) groupRef.current.rotation.set(0, 0, 0)
   }, [activeMove])
 
-  const cubies = useMemo(() => {
-    const out: Pos[] = []
-    for (let x = -1; x <= 1; x++)
-      for (let y = -1; y <= 1; y++)
-        for (let z = -1; z <= 1; z++) {
-          if (x === 0 && y === 0 && z === 0) continue
-          out.push({ x, y, z })
-        }
-    return out
-  }, [])
+  const cubies = ALL_CUBIES
 
   useFrame((_, delta) => {
     if (rootRef.current) {

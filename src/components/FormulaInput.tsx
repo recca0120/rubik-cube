@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Cube } from '@/cube/Cube'
 import { StickerButton } from './ui/StickerButton'
 
@@ -26,7 +26,7 @@ export function FormulaInput({
   onCancel?: () => void
 }) {
   const [text, setText] = useState('')
-  const parsed = useMemo(() => parse(text), [text])
+  const parsed = parse(text)
   const canApply = parsed.ok
 
   return (

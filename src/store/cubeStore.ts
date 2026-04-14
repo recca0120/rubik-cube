@@ -11,6 +11,9 @@ import { solveYellowCross } from '@/cube/solvers/yellowCross'
 import { solveYellowFace } from '@/cube/solvers/yellowFace'
 import { solvePLL } from '@/cube/solvers/pll'
 
+export type AppMode = 'welcome' | 'wizard' | 'sandbox' | 'expert'
+export type HighlightedPieces = 'centers' | 'corners' | 'edges' | null
+
 export type MethodSegment = { name: string; moves: string[] }
 export type MethodSummary = { totalMoves: number; segments: MethodSegment[] }
 export type MethodComparison = { lbl: MethodSummary; cfop: MethodSummary }
@@ -21,8 +24,8 @@ type CubeState = {
   history: string[]
 
   // Kid-friendly fields (v2)
-  appMode: 'welcome' | 'wizard' | 'sandbox' | 'expert'
-  setAppMode: (m: 'welcome' | 'wizard' | 'sandbox' | 'expert') => void
+  appMode: AppMode
+  setAppMode: (m: AppMode) => void
   wizardChapter: number
   wizardStep: number
   setWizardChapter: (n: number) => void
@@ -33,8 +36,8 @@ type CubeState = {
   setHighlightedFace: (face: string | null) => void
   highlightedMove: string | null
   setHighlightedMove: (move: string | null) => void
-  highlightedPieces: 'centers' | 'corners' | 'edges' | null
-  setHighlightedPieces: (v: 'centers' | 'corners' | 'edges' | null) => void
+  highlightedPieces: HighlightedPieces
+  setHighlightedPieces: (v: HighlightedPieces) => void
   highlightedCubies: [number, number, number][] | null
   setHighlightedCubies: (v: [number, number, number][] | null) => void
   viewRotX: number

@@ -21,14 +21,6 @@ function yPermPos(pos: number, s: number): number {
   return base + ((j - s) % 4 + 4) % 4
 }
 
-function yPermCorner(id: number, s: number): number {
-  return yPermPos(id, s)
-}
-
-function yPermEdge(id: number, s: number): number {
-  return yPermPos(id, s)
-}
-
 export function yRotateState(state: CubieState, s: number): CubieState {
   const new_cp = new Array<number>(8)
   const new_co = new Array<number>(8)
@@ -36,13 +28,13 @@ export function yRotateState(state: CubieState, s: number): CubieState {
   const new_eo = new Array<number>(12)
 
   for (let P = 0; P < 8; P++) {
-    const newP = yPermCorner(P, s)
-    new_cp[newP] = yPermCorner(state.cp[P], s)
+    const newP = yPermPos(P, s)
+    new_cp[newP] = yPermPos(state.cp[P], s)
     new_co[newP] = state.co[P]
   }
   for (let P = 0; P < 12; P++) {
-    const newP = yPermEdge(P, s)
-    new_ep[newP] = yPermEdge(state.ep[P], s)
+    const newP = yPermPos(P, s)
+    new_ep[newP] = yPermPos(state.ep[P], s)
     new_eo[newP] = state.eo[P]
   }
 

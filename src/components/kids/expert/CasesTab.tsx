@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { F2L_CASES } from '@/cube/cases/f2l'
 import { PLL_CASES } from '@/cube/cases/pll'
 import { SOLVED } from '@/cube/Cube'
@@ -26,17 +26,16 @@ export function CasesTab({ onJumpToSolve }: Props = {}) {
   const setViewFlipped = useCubeStore((s) => s.setViewFlipped)
 
   const rawCases: CaseData[] = family === 'f2l' ? F2L_CASES : PLL_CASES
-  const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase()
-    if (!q) return rawCases
-    return rawCases.filter(
-      (c) =>
-        c.name.toLowerCase().includes(q) ||
-        c.id.toLowerCase().includes(q) ||
-        c.alg.toLowerCase().includes(q) ||
-        (c.description ?? '').toLowerCase().includes(q),
-    )
-  }, [rawCases, search])
+  const q = search.trim().toLowerCase()
+  const filtered = q
+    ? rawCases.filter(
+        (c) =>
+          c.name.toLowerCase().includes(q) ||
+          c.id.toLowerCase().includes(q) ||
+          c.alg.toLowerCase().includes(q) ||
+          (c.description ?? '').toLowerCase().includes(q),
+      )
+    : rawCases
 
   async function apply(c: CaseData) {
     const inverse = invertAlg(c.alg)
