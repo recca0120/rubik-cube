@@ -53,8 +53,6 @@ export function Cube3D() {
     if (groupRef.current) groupRef.current.rotation.set(0, 0, 0)
   }, [activeMove])
 
-  const cubies = ALL_CUBIES
-
   useFrame((_, delta) => {
     if (rootRef.current) {
       const w = idleRotationSpeed({
@@ -80,8 +78,8 @@ export function Cube3D() {
     }
   })
 
-  const rotating = move ? cubies.filter(move.layer) : []
-  const stationary = move ? cubies.filter((c) => !move.layer(c)) : cubies
+  const rotating = move ? ALL_CUBIES.filter(move.layer) : []
+  const stationary = move ? ALL_CUBIES.filter((c) => !move.layer(c)) : ALL_CUBIES
   const isOnHighlightedFace = (c: Pos): boolean => {
     if (!highlightedFace) return false
     switch (highlightedFace) {
